@@ -6,8 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
+
+import exceptions.DigitouNadaException;
+import exceptions.SemDadosException;
 
 public class LivroDAO {
 
@@ -94,7 +98,7 @@ public class LivroDAO {
 			JOptionPane.showMessageDialog(null, "ERRO: Digite algo antes de apertar OK!");
 			deletaLivro();
 		}catch (NullPointerException e) {
-			JOptionPane.showMessageDialog(null, "OPERAÇÃO CANCELADA!");
+			//VOLTA PARA O MENU
 		}
 
 	}
@@ -134,7 +138,7 @@ public class LivroDAO {
 				throw new DigitouNadaException();
 			}
 		} catch (NullPointerException e) {
-			JOptionPane.showMessageDialog(null, "OPERAÇÃO CANCELADA!");
+			//VOLTA PARA O MENU
 		} catch (DigitouNadaException e) {
 			JOptionPane.showMessageDialog(null, "ERRO: Digite algo antes de apertar OK!");
 			atualizaTitulo();
@@ -158,35 +162,46 @@ public class LivroDAO {
 		}
 	}
 	
-	public void mostarTabela() {
+	List<Livro> livros = new ArrayList<Livro>();
+	
+	public void obterTabela() {
 		try {
-			String sql = "SELECT *FROM livro";
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
-			ArrayList<Livro> array = new ArrayList<>();
+			ResultSet rs = stmt.executeQuery("SELECT *FROM livro");
 			
 			int i = 0;
 			
-			System.out.println("\tTABELA LIVROS\n");
 			while(rs.next()) {
-				System.out.println("\n");
-				System.out.println("ISBN :"+rs.getInt("isbn"));
-				System.out.println("TITULO :"+rs.getString("titulo"));
-				System.out.println("EDITORA :"+rs.getString("editora"));
-				System.out.println("ANO :"+rs.getInt("ano"));
+				Livro livro = new Livro();
+				livro.setIsbn(rs.getInt("isbn"));
+				livro.setTitulo(rs.getString("titulo"));
+				livro.setEditora(rs.getString("editora"));
+				livro.setAno(rs.getInt("ano"));
+				livros.add(livro);
 				i++;
 			}
-			
-			System.out.println("\nVocê tem " + i + " livros na sua biblioteca!");
-			
+			if(i == 0) {
+				throw new SemDadosException();
+			}
 			stmt.close();
 			rs.close();
-			
 		}catch(SQLException e) {
 			JOptionPane.showMessageDialog(null, "Erro ao mostrar tabela!");
 			throw new RuntimeException(e);
+		}catch(SemDadosException e) {
+			JOptionPane.showMessageDialog(null, "Tabela vazia ou inexistente!");
 		}
 	}
+
+	public List<Livro> getLivros() {
+		return livros;
+	}
+
+	public void setLivros(List<Livro> livros) {
+		this.livros = livros;
+	}
+	
+	
 
 }
 

@@ -1,11 +1,21 @@
-package bancoDados;
+package interfaceGrafica;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+
+import com.towel.swing.img.JImagePanel;
+
+import bancoDados.Livro;
+import bancoDados.LivroDAO;
 import net.miginfocom.swing.MigLayout;
 
 public class InterfaceGraficaMenu {
@@ -15,18 +25,13 @@ public class InterfaceGraficaMenu {
 	
 	JFrame janela = new JFrame("Biblioteca");
 	JLabel lNome = new JLabel("BIBILIOTECA");
-	JPanel painel = new JPanel();
-
-	public void menu() {
-		preparaTelaMenu();
-	}
 	
-	public void preparaTelaMenu() {
-		preparaPainel();
+
+	public void menu() throws IOException {
 		preparaJanela();
 	}
 
-	public void botaoSair() {
+	public JButton botaoSair() {
 		JButton botaoSair = new JButton("Sair");
 
 		botaoSair.addActionListener(new ActionListener() {
@@ -34,11 +39,11 @@ public class InterfaceGraficaMenu {
 				System.exit(0);
 			}
 		});
-
-		painel.add(botaoSair, "wrap");
+		
+		return botaoSair;
 	}
 
-	public void botaoCriar() {
+	public JButton botaoCriar() {
 		JButton botaoCriar = new JButton("Criar Tabela Livro");
 
 		botaoCriar.addActionListener(new ActionListener() {
@@ -46,10 +51,11 @@ public class InterfaceGraficaMenu {
 				metodos.criaTabelaLivro();
 			}
 		});
-		painel.add(botaoCriar, "wrap");
+		
+		return botaoCriar;
 	}
 
-	public void botaoInserir() {
+	public JButton botaoInserir() {
 		InterfaceGraficaInserir igi = new InterfaceGraficaInserir();
 		JButton botaoInserir = new JButton("Inserir Livro");
 
@@ -58,11 +64,11 @@ public class InterfaceGraficaMenu {
 				igi.add();
 			}
 		});
-
-		painel.add(botaoInserir, "wrap");
+		
+		return botaoInserir;
 	}
 
-	public void botaoDeletar() {
+	public JButton botaoDeletar() {
 		JButton botaoDeletar = new JButton("Deletar Livro");
 
 		botaoDeletar.addActionListener(new ActionListener() {
@@ -71,10 +77,10 @@ public class InterfaceGraficaMenu {
 			}
 		});
 
-		painel.add(botaoDeletar, "wrap");
+		return botaoDeletar;
 	}
 
-	public void botaoAtualizar() {
+	public JButton botaoAtualizar() {
 		JButton botaoAtualizar = new JButton("Atualizar Livro");
 
 		botaoAtualizar.addActionListener(new ActionListener() {
@@ -83,10 +89,10 @@ public class InterfaceGraficaMenu {
 			}
 		});
 		
-		painel.add(botaoAtualizar,"wrap");
+		return botaoAtualizar;
 	}
 	
-	public void botaoDeletarTabela() {
+	public JButton botaoDeletarTabela() {
 		JButton botaoDeletarTabela = new JButton("Deletar Tabela");
 		
 		botaoDeletarTabela.addActionListener(new ActionListener() {
@@ -95,43 +101,54 @@ public class InterfaceGraficaMenu {
 			}
 		});
 		
-		painel.add(botaoDeletarTabela, "wrap");
+		return botaoDeletarTabela;
 	}
 	
-	public void botaoMostrar() {
+	public JButton botaoMostrar() {
 		JButton botaoMostar = new JButton("Mostar Tabela");
+		InterfaceGraficaMostar igm = new InterfaceGraficaMostar();
 		
 		botaoMostar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				metodos.mostarTabela();
+				igm.mostraTabela();
 				
 			}
 		});
 		
-		painel.add(botaoMostar, "wrap");
+		return botaoMostar;
 	}
 
-	public void preparaPainel() {
-		
+	public JImagePanel painel() throws IOException {
+		JImagePanel painel = new JImagePanel(
+	            loadImage("images/biblioteca.jpg"));
 		painel.setLayout(new MigLayout());
-		painel.add(lNome, "wrap");
-		botaoCriar();
-		botaoInserir();
-		botaoDeletar();
-		botaoAtualizar();
-		botaoDeletarTabela();
-		botaoMostrar();
-		botaoSair();
-
+		lNome.setForeground(Color.WHITE);
+		painel.add(lNome, BorderLayout.CENTER);
+		
+		painel.add(botaoSair(), BorderLayout.SOUTH);
+		painel.add(botaoCriar(), BorderLayout.SOUTH);
+		painel.add(botaoInserir(), BorderLayout.SOUTH);
+		painel.add(botaoDeletar(), BorderLayout.SOUTH);
+		painel.add(botaoAtualizar(),BorderLayout.SOUTH);
+		painel.add(botaoDeletarTabela(), BorderLayout.SOUTH);
+		painel.add(botaoMostrar(), BorderLayout.SOUTH);
+		
+		
+		return painel;
 	}
 
-	public void preparaJanela() {
-		janela.add(painel);
+	public void preparaJanela() throws IOException {
+		janela.add(painel());
 		janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		janela.pack();
 		janela.setVisible(true);
 		janela.setSize(480, 480);
 		janela.setLocationRelativeTo(null);
+		janela.setResizable(false);
 	}
+	
+	private static BufferedImage loadImage(String file) throws IOException {
+        return ImageIO.read(new File(file));
+    }
 
 }

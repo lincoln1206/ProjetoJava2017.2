@@ -1,4 +1,4 @@
-package bancoDados;
+package exceptions;
 
 public class DigitouNadaException extends Exception{
 	
