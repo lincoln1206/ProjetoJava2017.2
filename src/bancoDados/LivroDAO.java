@@ -1,5 +1,6 @@
 package bancoDados;
 
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,10 +31,12 @@ public class LivroDAO {
 			stmt.execute(sql);
 			con.commit();
 			stmt.close();
-
+			
+			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Tabela criada com sucesso!");
 
 		} catch (SQLException e) {
+			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Falha ao criar tabela livro");
 			throw new RuntimeException(e);
 		}
@@ -56,6 +59,7 @@ public class LivroDAO {
 			JOptionPane.showMessageDialog(null, "Livro inserido com sucesso!");
 
 		} catch (SQLException e) {
+			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Falha ao inserir livro!\n\nCAUSA: Outro livro já inserido com esse mesmo 'ISBN'");
 			throw new RuntimeException(e);
 		}
@@ -92,9 +96,11 @@ public class LivroDAO {
 				throw new DigitouNadaException();
 			}
 		} catch (SQLException e) {
+			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Erro ao deletar livro!");
 			throw new RuntimeException(e);
 		}catch (DigitouNadaException e) {
+			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "ERRO: Digite algo antes de apertar OK!");
 			deletaLivro();
 		}catch (NullPointerException e) {
@@ -124,12 +130,14 @@ public class LivroDAO {
 						stmt.setString(2, tituloAntigo);
 						stmt.executeUpdate();
 						stmt.close();
-
+						
+						Toolkit.getDefaultToolkit().beep();
 						JOptionPane.showMessageDialog(null, "Titulo modificado com sucesso!");
 					} else if (novoTitulo.length() == 0 && novoTitulo != null) {
 						throw new DigitouNadaException();
 					}
 				} else {
+					Toolkit.getDefaultToolkit().beep();
 					JOptionPane.showMessageDialog(null, "ERRO: Titulo não existe na tabela livro!");
 					atualizaTitulo();
 
@@ -140,9 +148,11 @@ public class LivroDAO {
 		} catch (NullPointerException e) {
 			//VOLTA PARA O MENU
 		} catch (DigitouNadaException e) {
+			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "ERRO: Digite algo antes de apertar OK!");
 			atualizaTitulo();
 		} catch (SQLException e) {
+			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Erro ao atualizar título!");
 			throw new RuntimeException(e);
 		}
@@ -155,8 +165,10 @@ public class LivroDAO {
 			stmt.execute();
 			stmt.close();
 			
+			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Tabela 'livro' deletada com sucesso!");
 		}catch(SQLException e) {
+			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Erro ao deletar tabela!");
 			throw new RuntimeException(e);
 		}
@@ -186,9 +198,11 @@ public class LivroDAO {
 			stmt.close();
 			rs.close();
 		}catch(SQLException e) {
+			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Erro ao mostrar tabela!");
 			throw new RuntimeException(e);
 		}catch(SemDadosException e) {
+			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Tabela vazia ou inexistente!");
 		}
 	}

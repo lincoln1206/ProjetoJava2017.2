@@ -138,6 +138,7 @@ public class InterfaceGraficaMenu {
 	}
 
 	public void preparaJanela() throws IOException {
+		
 		janela.add(painel());
 		janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		janela.pack();
