@@ -24,14 +24,12 @@ public class LivroDAO {
 
 	public void criaTabelaLivro() {
 		try {
-			con.setAutoCommit(false);
-			Statement stmt = con.createStatement();
-			String sql = "create table livro( " + "isbn int primary key," + "titulo varchar(30),"
-					+ "editora varchar(30)," + "ano int );";
-			stmt.execute(sql);
-			con.commit();
+			String sql = "CREATE TABLE livro( " + "isbn int primary key," + "titulo varchar(30),"
+					+ "editora varchar(30)," + "autor varchar(30)," + "ano int );";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.execute();
 			stmt.close();
-			
+
 			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Tabela criada com sucesso!");
 
@@ -47,12 +45,13 @@ public class LivroDAO {
 
 		try {
 
-			String sql = "INSERT INTO livro (isbn,titulo, editora, ano) VALUES(?,?,?,?)";
+			String sql = "INSERT INTO livro (isbn,titulo, editora,autor, ano) VALUES(?,?,?,?,?)";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setInt(1, livros.getIsbn());
 			stmt.setString(2, livros.getTitulo());
 			stmt.setString(3, livros.getEditora());
-			stmt.setInt(4, livros.getAno());
+			stmt.setString(4, livros.getAutor());
+			stmt.setInt(5, livros.getAno());
 			stmt.execute();
 			stmt.close();
 
@@ -60,7 +59,8 @@ public class LivroDAO {
 
 		} catch (SQLException e) {
 			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(null, "Falha ao inserir livro!\n\nCAUSA: Outro livro já inserido com esse mesmo 'ISBN'");
+			JOptionPane.showMessageDialog(null,
+					"Falha ao inserir livro!\n\nCAUSA: Outro livro já inserido com esse mesmo 'ISBN'");
 			throw new RuntimeException(e);
 		}
 	}
@@ -86,25 +86,27 @@ public class LivroDAO {
 					stmt.executeUpdate();
 					stmt.close();
 
+					Toolkit.getDefaultToolkit().beep();
 					JOptionPane.showMessageDialog(null, "Livro deletado com sucesso!");
 
 				} else {
+					Toolkit.getDefaultToolkit().beep();
 					JOptionPane.showMessageDialog(null, "Titulo não existe na tabela livro!");
 					deletaLivro();
 				}
-			}else if(titulo.length() == 0 && titulo != null) {
+			} else if (titulo.length() == 0 && titulo != null) {
 				throw new DigitouNadaException();
 			}
 		} catch (SQLException e) {
 			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Erro ao deletar livro!");
 			throw new RuntimeException(e);
-		}catch (DigitouNadaException e) {
+		} catch (DigitouNadaException e) {
 			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "ERRO: Digite algo antes de apertar OK!");
 			deletaLivro();
-		}catch (NullPointerException e) {
-			//VOLTA PARA O MENU
+		} catch (NullPointerException e) {
+			// VOLTA PARA O MENU
 		}
 
 	}
@@ -130,7 +132,7 @@ public class LivroDAO {
 						stmt.setString(2, tituloAntigo);
 						stmt.executeUpdate();
 						stmt.close();
-						
+
 						Toolkit.getDefaultToolkit().beep();
 						JOptionPane.showMessageDialog(null, "Titulo modificado com sucesso!");
 					} else if (novoTitulo.length() == 0 && novoTitulo != null) {
@@ -146,7 +148,7 @@ public class LivroDAO {
 				throw new DigitouNadaException();
 			}
 		} catch (NullPointerException e) {
-			//VOLTA PARA O MENU
+			// VOLTA PARA O MENU
 		} catch (DigitouNadaException e) {
 			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "ERRO: Digite algo antes de apertar OK!");
@@ -157,51 +159,48 @@ public class LivroDAO {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public void deletarTabela() {
 		try {
 			String sql = "DROP TABLE livro";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.execute();
 			stmt.close();
-			
+
 			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Tabela 'livro' deletada com sucesso!");
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Erro ao deletar tabela!");
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	List<Livro> livros = new ArrayList<Livro>();
-	
+
 	public void obterTabela() {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT *FROM livro");
-			
+
 			int i = 0;
-			
-			while(rs.next()) {
-				Livro livro = new Livro();
-				livro.setIsbn(rs.getInt("isbn"));
-				livro.setTitulo(rs.getString("titulo"));
-				livro.setEditora(rs.getString("editora"));
-				livro.setAno(rs.getInt("ano"));
+
+			while (rs.next()) {
+				Livro livro = new Livro(rs.getInt("isbn"), rs.getString("titulo"), rs.getString("editora"),
+						rs.getString("autor"), rs.getInt("ano"));
 				livros.add(livro);
 				i++;
 			}
-			if(i == 0) {
+			if (i == 0) {
 				throw new SemDadosException();
 			}
 			stmt.close();
 			rs.close();
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Erro ao mostrar tabela!");
 			throw new RuntimeException(e);
-		}catch(SemDadosException e) {
+		} catch (SemDadosException e) {
 			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Tabela vazia ou inexistente!");
 		}
@@ -214,9 +213,5 @@ public class LivroDAO {
 	public void setLivros(List<Livro> livros) {
 		this.livros = livros;
 	}
-	
-	
 
 }
-
-

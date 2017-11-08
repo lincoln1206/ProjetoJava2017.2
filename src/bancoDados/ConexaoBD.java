@@ -8,8 +8,8 @@ public class ConexaoBD {
 	
 	public Connection getConnection() {
 		try {
-			Class.forName("org.postgresql.Driver");
-			return DriverManager.getConnection("jdbc:postgresql://localhost/biblioteca" , "postgres" , "lincoln");
+			Class.forName("com.mysql.jdbc.Driver");
+			return DriverManager.getConnection("jdbc:mysql://localhost/biblioteca" , "mysql" , "mysql");
 		} catch (ClassNotFoundException | SQLException e) {
 			throw new RuntimeException(e);
 		}

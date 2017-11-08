@@ -5,17 +5,19 @@ public class Livro {
 	int isbn;
     String titulo;
 	String editora;
+	String autor;
 	int ano;
 	
 	public Livro() {
 
 	}
 	
-	public Livro(int isbn, String titulo, String editora, int ano) {
+	public Livro(int isbn, String titulo, String editora, String autor, int ano) {
 		super();
 		this.isbn = isbn;
 		this.titulo = titulo;
 		this.editora = editora;
+		this.autor = autor;;
 		this.ano = ano;
 	}
 
@@ -41,6 +43,14 @@ public class Livro {
 
 	public void setEditora(String editora) {
 		this.editora = editora;
+	}
+
+	public String getAutor() {
+		return autor;
+	}
+
+	public void setAutor(String autor) {
+		this.autor = autor;
 	}
 
 	public int getAno() {
