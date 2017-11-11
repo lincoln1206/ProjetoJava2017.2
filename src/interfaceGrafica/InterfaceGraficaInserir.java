@@ -182,27 +182,23 @@ public class InterfaceGraficaInserir extends JFrame {
 
 		}
 
-		System.out.println("ISBN :" + livro.getIsbn());
-
 	}
 
 	public void addTitulo() {
 
 		livro.setTitulo(titulo.getText());
-		System.out.println("TÍTULO :" + livro.getTitulo());
 
 	}
 
 	public void addEditora() {
 
 		livro.setEditora(editora.getText());
-		System.out.println("EDITORA :" + livro.getEditora());
 
 	}
 
 	public void addAutor() {
+		
 		livro.setAutor(autor.getText());
-		System.out.println("AUTOR :" + livro.getAutor());
 	}
 
 	public void addAno() {
@@ -229,8 +225,6 @@ public class InterfaceGraficaInserir extends JFrame {
 					"ERRO: O campo 'ANO' só aceita números inteiros menores que 2.147.483.647!");
 
 		}
-
-		System.out.println("ANO :" + livro.getAno());
 
 	}
 

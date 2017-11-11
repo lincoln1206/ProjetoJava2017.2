@@ -36,7 +36,6 @@ public class LivroDAO {
 		} catch (SQLException e) {
 			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Falha ao criar tabela livro");
-			throw new RuntimeException(e);
 		}
 
 	}
@@ -60,8 +59,7 @@ public class LivroDAO {
 		} catch (SQLException e) {
 			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null,
-					"Falha ao inserir livro!\n\nCAUSA: Outro livro já inserido com esse mesmo 'ISBN'");
-			throw new RuntimeException(e);
+					"Falha ao inserir livro!\n\nCAUSA: Provavelmente outro livro já inserido com esse mesmo 'ISBN'");
 		}
 	}
 
@@ -100,7 +98,6 @@ public class LivroDAO {
 		} catch (SQLException e) {
 			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Erro ao deletar livro!");
-			throw new RuntimeException(e);
 		} catch (DigitouNadaException e) {
 			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "ERRO: Digite algo antes de apertar OK!");
@@ -156,7 +153,6 @@ public class LivroDAO {
 		} catch (SQLException e) {
 			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Erro ao atualizar título!");
-			throw new RuntimeException(e);
 		}
 	}
 
@@ -172,7 +168,6 @@ public class LivroDAO {
 		} catch (SQLException e) {
 			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Erro ao deletar tabela!");
-			throw new RuntimeException(e);
 		}
 	}
 
@@ -198,11 +193,10 @@ public class LivroDAO {
 			rs.close();
 		} catch (SQLException e) {
 			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(null, "Erro ao mostrar tabela!");
-			throw new RuntimeException(e);
+			JOptionPane.showMessageDialog(null, "Erro ao obter tabela!");
 		} catch (SemDadosException e) {
 			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(null, "Tabela vazia ou inexistente!");
+			JOptionPane.showMessageDialog(null, "Tabela vazia!");
 		}
 	}
 
