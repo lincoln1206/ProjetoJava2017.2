@@ -1,19 +1,34 @@
 package interfaceGrafica;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.ComponentOrientation;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import com.towel.swing.img.JImagePanel;
+
 import bancoDados.Livro;
 import bancoDados.LivroDAO;
-import net.miginfocom.swing.MigLayout;
 
 public class InterfaceGraficaInserir extends JFrame {
 
@@ -23,31 +38,26 @@ public class InterfaceGraficaInserir extends JFrame {
 	private static final long serialVersionUID = 2438857302623013841L;
 	Livro livro = new Livro();
 	LivroDAO banco = new LivroDAO();
+	
+	JLabel lNome = new JLabel("INSERIR LIVRO");
+	JLabel lTitulo = new JLabel("TÍTULO:");
+	JLabel lEditora = new JLabel("EDITORA:");
+	JLabel lAutor = new JLabel("AUTOR:");
+	JLabel lAno = new JLabel("ANO:");
 
-	JPanel panel = new JPanel();
-
-	JLabel lIsbn = new JLabel(" ISBN");
-	JLabel lTitulo = new JLabel(" TÍTULO");
-	JLabel lEditora = new JLabel(" EDITORA");
-	JLabel lAutor = new JLabel(" AUTOR");
-	JLabel lAno = new JLabel(" ANO");
-
-	JTextField isbn = new JTextField(8);
 	JTextField titulo = new JTextField(8);
 	JTextField editora = new JTextField(8);
 	JTextField autor = new JTextField(8);
-	JTextField ano = new JTextField(8);
+	JComboBox<String> cbAnos = new JComboBox<String>();
 
-	public InterfaceGraficaInserir() {
-		
-		Image iconeTitulo = Toolkit.getDefaultToolkit().getImage("images/livro.png");  
+	public InterfaceGraficaInserir() throws IOException {
+
+		Image iconeTitulo = Toolkit.getDefaultToolkit().getImage("images/livro.png");
 		this.setIconImage(iconeTitulo);
-		preparaPainel();
 		this.setTitle("Biblioteca");
-		this.add(panel);
+		this.add(painel());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setSize(200, 200);
-		this.setVisible(true);
+		this.setSize(480, 480);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 	}
@@ -61,22 +71,13 @@ public class InterfaceGraficaInserir extends JFrame {
 
 			public void actionPerformed(ActionEvent e) {
 
-				addIsbn();
 				addTitulo();
 				addEditora();
 				addAutor();
-				addAno();
 
-				String tempIsbn = String.valueOf(livro.getIsbn());
-
-				String tempAno = String.valueOf(livro.getAno());
-
-				if (tempIsbn != null && !tempIsbn.isEmpty() && livro.getTitulo() != null && !livro.getTitulo().isEmpty()
-
-						&& livro.getEditora() != null && !livro.getEditora().isEmpty() && tempAno != null
-
-						&& !tempAno.isEmpty() && livro.getIsbn() > 0 && livro.getAno() != 0 && livro.getAutor() != null
-						&& !livro.getAutor().isEmpty()) {
+				if (livro.getTitulo() != null && !livro.getTitulo().isEmpty() && livro.getEditora() != null
+						&& !livro.getEditora().isEmpty() && livro.getAno() != null
+						&& livro.getAutor() != null && !livro.getAutor().isEmpty()) {
 
 					banco.insereLivro(livro);
 
@@ -119,68 +120,100 @@ public class InterfaceGraficaInserir extends JFrame {
 		return botaoCancelar;
 
 	}
+	
+	public JImagePanel painel() throws IOException {
+		JImagePanel painel = new JImagePanel(loadImage("images/biblioteca.jpg"));
+		painel.setLayout(new GridBagLayout());
+		
+		painel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+		GridBagConstraints c = new GridBagConstraints();
+	
+		c.gridx = 2;
+		c.gridy = 0;
+		lNome.setForeground(Color.WHITE);
+		lNome.setBackground(Color.WHITE);
+		lNome.setFont(new Font("Arial", Font.BOLD, 20));
+		painel.add(lNome, c);
+		
+		//DEFINE OS PADRÕES
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.0;
+		c.weighty = 0.5;
+		c.ipady = 10;      
+		c.weightx = 1.0;
+		c.gridwidth = 0;
+		c.gridx = 0;
+		//
+		
+		c.gridx = 0;
+		c.gridy = 1;
+		lTitulo.setForeground(Color.WHITE);
+		lTitulo.setBackground(Color.WHITE);
+		lTitulo.setFont(new Font("Arial", Font.BOLD, 20));
+		painel.add(lTitulo, c);
+		
+		c.gridx = 4;
+		c.gridy = 1;
+		painel.add(titulo, c);
+		
+		c.gridx = 0;
+		c.gridy = 2;
+		lAutor.setForeground(Color.WHITE);
+		lAutor.setBackground(Color.WHITE);
+		lAutor.setFont(new Font("Arial", Font.BOLD, 20));
+		painel.add(lAutor, c);
+		
+		c.gridx = 4;
+		c.gridy = 2;
+		painel.add(autor, c);
+		
+		c.gridx = 0;
+		c.gridy = 3;
+		lEditora.setForeground(Color.WHITE);
+		lEditora.setBackground(Color.WHITE);
+		lEditora.setFont(new Font("Arial", Font.BOLD, 20));
+		painel.add(lEditora, c);
 
-	public void preparaPainel() {
-
-		panel.setLayout(new MigLayout());
-		panel.add(lIsbn);
-		panel.add(isbn, "wrap");
-		panel.add(lTitulo);
-		panel.add(titulo, "wrap");
-		panel.add(lEditora);
-		panel.add(editora, "wrap");
-		panel.add(lAutor);
-		panel.add(autor, "wrap");
-		panel.add(lAno);
-		panel.add(ano, "wrap");
-		panel.add(botaoInserir(), BorderLayout.CENTER);
-		panel.add(botaoCancelar(), BorderLayout.CENTER);
-
+		c.gridx = 4;
+		c.gridy = 3;
+		painel.add(editora, c);
+		
+		c.gridx = 0;
+		c.gridy = 4;
+		lAno.setForeground(Color.WHITE);
+		lAno.setBackground(Color.WHITE);
+		lAno.setFont(new Font("Arial", Font.BOLD, 20));
+		painel.add(lAno, c);
+		
+		c.gridx = 4;
+		c.gridy = 4;
+		comboBox();
+		painel.add(cbAnos, c);
+		
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		c.ipady = 5;  
+		
+		c.gridx = 0;
+		c.gridy = 5;
+		painel.add(botaoInserir(), c);
+		
+		c.gridx = 0;
+		c.gridy = 6;
+		painel.add(botaoCancelar(), c);
+		
+		return painel;
 	}
 
 	public void limparCampos() {
 
-		isbn.setText("");
-		livro.setIsbn(0);
 		titulo.setText("");
 		livro.setTitulo(null);
 		editora.setText("");
 		livro.setEditora(null);
 		autor.setText("");
 		livro.setAutor(null);
-		ano.setText("");
-		livro.setAno(0);
-
-	}
-
-	public void addIsbn() {
-
-		String temp = isbn.getText();
-
-		if (!temp.trim().isEmpty()) {
-
-			try {
-
-				if (!temp.trim().isEmpty()) {
-
-					livro.setIsbn(Integer.parseInt(temp));
-
-				} else if (livro.getIsbn() == 0 || livro.getIsbn() > 2147483647) {
-
-					throw new NumberFormatException();
-
-				}
-
-			} catch (Exception e) {
-
-				Toolkit.getDefaultToolkit().beep();
-				JOptionPane.showMessageDialog(null,
-
-						"ERRO: CAMPO 'ISBN' deve conter apenas números inteiros maiores que 0 e menores que 2.147.483.647!");
-
-			}
-
-		}
+		livro.setAno(null);
 
 	}
 
@@ -193,39 +226,50 @@ public class InterfaceGraficaInserir extends JFrame {
 	public void addEditora() {
 
 		livro.setEditora(editora.getText());
-
+		
 	}
 
 	public void addAutor() {
-		
+
 		livro.setAutor(autor.getText());
+		
 	}
-
+	
 	public void addAno() {
+		
+		livro.setAno((String)cbAnos.getSelectedItem().toString());
+		
+	}
+	
+	public void comboBox() {
+		List<Livro> anos = new ArrayList<Livro>();
 
-		String temp = ano.getText();
+		Calendar cal = GregorianCalendar.getInstance();
+		int anoAtual = cal.get(Calendar.YEAR);
 
-		try {
-
-			if (!temp.trim().isEmpty()) {
-
-				livro.setAno(Integer.parseInt(temp));
-
-			} else if (livro.getAno() > 2147483647) {
-
-				throw new NumberFormatException();
-
-			}
-
-		} catch (Exception e) {
-
-			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(null,
-
-					"ERRO: O campo 'ANO' só aceita números inteiros menores que 2.147.483.647!");
-
+		for (int i = -3000; i <= anoAtual; i++) {
+			String anoTemp = String.valueOf(i);
+			Livro ano = new Livro(anoTemp);
+			anos.add(ano);
 		}
-
+		
+		String strAno = null;
+		for (int i = 0; i < anos.size(); i++) {
+			strAno = (String) anos.get(i).toString();
+			cbAnos.addItem(strAno);
+		}
+		cbAnos.setSelectedIndex(anos.size() - 1);
+		cbAnos.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addAno();
+			}
+		});
+	}
+	
+	private static BufferedImage loadImage(String file) throws IOException {
+		return ImageIO.read(new File(file));
 	}
 
 }

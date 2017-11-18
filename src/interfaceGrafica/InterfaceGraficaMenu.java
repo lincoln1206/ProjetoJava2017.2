@@ -22,7 +22,7 @@ import com.towel.swing.img.JImagePanel;
 import bancoDados.Livro;
 import bancoDados.LivroDAO;
 
-public class InterfaceGraficaMenu extends JFrame{
+public class InterfaceGraficaMenu extends JFrame {
 
 	/**
 	 * 
@@ -31,8 +31,11 @@ public class InterfaceGraficaMenu extends JFrame{
 	LivroDAO metodos = new LivroDAO();
 	Livro livro = new Livro();
 
+	private InterfaceGraficaInserir igi = new InterfaceGraficaInserir();
+	private InterfaceGraficaMostar igm = new InterfaceGraficaMostar();
+
 	public InterfaceGraficaMenu() throws IOException {
-		Image iconeTitulo = Toolkit.getDefaultToolkit().getImage("images/livro.png");  
+		Image iconeTitulo = Toolkit.getDefaultToolkit().getImage("images/livro.png");
 		this.setIconImage(iconeTitulo);
 		this.setTitle("Biblioteca");
 		this.add(painel());
@@ -49,7 +52,16 @@ public class InterfaceGraficaMenu extends JFrame{
 
 		botaoSair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
+				if (!igi.isVisible() && !igm.isVisible()) {
+					System.exit(0);
+				} else {
+					Toolkit.getDefaultToolkit().beep();
+					if (igi.isVisible()) {
+						shake(igi);
+					} else if (igm.isVisible()) {
+						shake(igm);
+					}
+				}
 			}
 		});
 
@@ -62,7 +74,16 @@ public class InterfaceGraficaMenu extends JFrame{
 
 		botaoCriar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				metodos.criaTabelaLivro();
+				if (!igi.isVisible() && !igm.isVisible()) {
+					metodos.criaTabelaLivro();
+				} else {
+					Toolkit.getDefaultToolkit().beep();
+					if (igi.isVisible()) {
+						shake(igi);
+					} else if (igm.isVisible()) {
+						shake(igm);
+					}
+				}
 			}
 		});
 
@@ -75,7 +96,18 @@ public class InterfaceGraficaMenu extends JFrame{
 
 		botaoInserir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new InterfaceGraficaInserir();
+				try {
+					new InterfaceGraficaInserir();
+					if (!igi.isVisible() && !igm.isVisible()) {
+						igi.setVisible(true);
+					} else {
+						Toolkit.getDefaultToolkit().beep();
+						shake(igi);
+					}
+
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 
@@ -88,7 +120,16 @@ public class InterfaceGraficaMenu extends JFrame{
 
 		botaoDeletar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				metodos.deletaLivro();
+				if (!igi.isVisible() && !igm.isVisible()) {
+					metodos.deletaLivro();
+				} else {
+					Toolkit.getDefaultToolkit().beep();
+					if (igi.isVisible()) {
+						shake(igi);
+					} else if (igm.isVisible()) {
+						shake(igm);
+					}
+				}
 			}
 		});
 
@@ -101,7 +142,16 @@ public class InterfaceGraficaMenu extends JFrame{
 
 		botaoAtualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				metodos.atualizaTitulo();
+				if (!igi.isVisible() && !igm.isVisible()) {
+					metodos.atualizaTitulo();
+				} else {
+					Toolkit.getDefaultToolkit().beep();
+					if (igi.isVisible()) {
+						shake(igi);
+					} else if (igm.isVisible()) {
+						shake(igm);
+					}
+				}
 			}
 		});
 
@@ -114,7 +164,16 @@ public class InterfaceGraficaMenu extends JFrame{
 
 		botaoDeletarTabela.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				metodos.deletarTabela();
+				if (!igi.isVisible() && !igm.isVisible()) {
+					metodos.deletarTabela();
+				} else {
+					Toolkit.getDefaultToolkit().beep();
+					if (igi.isVisible()) {
+						shake(igi);
+					} else if (igm.isVisible()) {
+						shake(igm);
+					}
+				}
 			}
 		});
 
@@ -128,6 +187,12 @@ public class InterfaceGraficaMenu extends JFrame{
 		botaoMostar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new InterfaceGraficaMostar();
+				if (!igm.isVisible() && !igi.isVisible()) {
+					igm.setVisible(true);
+				} else {
+					Toolkit.getDefaultToolkit().beep();
+					shake(igm);
+				}
 
 			}
 		});
@@ -138,10 +203,10 @@ public class InterfaceGraficaMenu extends JFrame{
 	public JImagePanel painel() throws IOException {
 		JImagePanel painel = new JImagePanel(loadImage("images/biblioteca.jpg"));
 		painel.setLayout(new GridBagLayout());
-		
+
 		painel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		GridBagConstraints c = new GridBagConstraints();
-		
+
 		JLabel lNome = new JLabel("BIBLIOTECA");
 		c.gridx = 2;
 		c.gridy = 0;
@@ -149,12 +214,12 @@ public class InterfaceGraficaMenu extends JFrame{
 		lNome.setBackground(Color.WHITE);
 		lNome.setFont(new Font("Arial", Font.BOLD, 20));
 		painel.add(lNome, c);
-		
-		//DEFINE OS PADRÕES DE TODOS OS BOTÕES
+
+		// DEFINE OS PADRÕES DE TODOS OS BOTÕES
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 0.0;
 		c.weighty = 0.5;
-		c.ipady = 20;      
+		c.ipady = 20;
 		c.weightx = 0.0;
 		c.gridwidth = 0;
 		c.gridx = 0;
@@ -163,27 +228,27 @@ public class InterfaceGraficaMenu extends JFrame{
 		c.gridx = 0;
 		c.gridy = 1;
 		painel.add(botaoCriar(), c);
-		
+
 		c.gridx = 0;
 		c.gridy = 2;
 		painel.add(botaoInserir(), c);
-		
+
 		c.gridx = 0;
 		c.gridy = 3;
 		painel.add(botaoDeletar(), c);
-		
+
 		c.gridx = 0;
 		c.gridy = 4;
 		painel.add(botaoAtualizar(), c);
-		
+
 		c.gridx = 0;
 		c.gridy = 5;
 		painel.add(botaoDeletarTabela(), c);
-		
+
 		c.gridx = 0;
 		c.gridy = 6;
 		painel.add(botaoMostrar(), c);
-		
+
 		c.gridx = 0;
 		c.gridy = 7;
 		painel.add(botaoSair(), c);
@@ -193,6 +258,36 @@ public class InterfaceGraficaMenu extends JFrame{
 
 	private static BufferedImage loadImage(String file) throws IOException {
 		return ImageIO.read(new File(file));
+	}
+
+	public void shake(javax.swing.JFrame jframe) {
+		try {
+			int originalX = jframe.getLocation().x;
+			int originalY = jframe.getLocation().y;
+			long sleepTime = 30;
+
+			for (int i = 0; i <= 2; i++) {
+				jframe.setLocation(originalX + 5, originalY);
+				Thread.sleep(sleepTime);
+				jframe.setLocation(originalX + 5, originalY + 5);
+				Thread.sleep(sleepTime);
+				jframe.setLocation(originalX, originalY + 5);
+				Thread.sleep(sleepTime);
+				jframe.setLocation(originalX, originalY);
+				Thread.sleep(sleepTime);
+				jframe.setLocation(originalX - 5, originalY);
+				Thread.sleep(sleepTime);
+				jframe.setLocation(originalX - 5, originalY - 5);
+				Thread.sleep(sleepTime);
+				jframe.setLocation(originalX, originalY - 5);
+				Thread.sleep(sleepTime);
+			}
+
+			jframe.setLocation(originalX, originalY);
+
+		} catch (Exception ex) {
+			System.out.println(ex.toString());
+		}
 	}
 
 }

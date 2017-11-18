@@ -40,8 +40,7 @@ public class InterfaceGraficaMostar extends JFrame {
 		this.setTitle("Biblioteca");
 		this.add(painel);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setVisible(true);
-		this.setSize(480, 500);
+		this.setSize(480, 480);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 	}
@@ -66,6 +65,7 @@ public class InterfaceGraficaMostar extends JFrame {
 	}
 	
 	public void preparaPainel() {
+		painel.setLayout(new BorderLayout());
 		painel.add(table);
 		scroll.getViewport().add(table);
 		painel.add(scroll);

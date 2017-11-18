@@ -31,7 +31,7 @@ public class LivrosTableModel extends AbstractTableModel {
 
 		switch (columnIndex) {
 		case 0:
-			return l.getIsbn();
+			return l.getCodigo();
 		case 1:
 			return l.getTitulo();
 		case 2:
@@ -48,7 +48,7 @@ public class LivrosTableModel extends AbstractTableModel {
 	public String getColumnName(int column) {
 		switch (column) {
 		case 0:
-			return "ISBN";
+			return "Código";
 		case 1:
 			return "Título";
 		case 2:

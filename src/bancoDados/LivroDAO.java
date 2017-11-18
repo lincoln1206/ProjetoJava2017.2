@@ -24,8 +24,8 @@ public class LivroDAO {
 
 	public void criaTabelaLivro() {
 		try {
-			String sql = "CREATE TABLE livro( " + "isbn int primary key," + "titulo varchar(30),"
-					+ "editora varchar(30)," + "autor varchar(30)," + "ano int );";
+			String sql = "CREATE TABLE livro( " + "codigo int IDENTITY(1,1) primary key," + "titulo varchar(30),"
+					+ "editora varchar(30)," + "autor varchar(30)," + "ano varchar(5));";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.execute();
 			stmt.close();
@@ -44,13 +44,13 @@ public class LivroDAO {
 
 		try {
 
-			String sql = "INSERT INTO livro (isbn,titulo, editora,autor, ano) VALUES(?,?,?,?,?)";
+			String sql = "INSERT INTO livro (titulo, editora,autor, ano) VALUES(?,?,?,?)";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, livros.getIsbn());
-			stmt.setString(2, livros.getTitulo());
-			stmt.setString(3, livros.getEditora());
-			stmt.setString(4, livros.getAutor());
-			stmt.setInt(5, livros.getAno());
+
+			stmt.setString(1, livros.getTitulo());
+			stmt.setString(2, livros.getEditora());
+			stmt.setString(3, livros.getAutor());
+			stmt.setString(4, livros.getAno());
 			stmt.execute();
 			stmt.close();
 
@@ -66,21 +66,21 @@ public class LivroDAO {
 	public void deletaLivro() {
 
 		try {
-			String titulo = JOptionPane.showInputDialog("Digite o título do livro que deseja excluir");
+			String codigo = JOptionPane.showInputDialog("Digite o código do livro que deseja excluir");
 
-			if (titulo.length() > 0 && titulo != null) {
-				String pesquisa = "SELECT titulo FROM livro WHERE titulo=?";
+			if (codigo.length() > 0 && codigo != null) {
+				String pesquisa = "SELECT titulo FROM livro WHERE codigo=?";
 				PreparedStatement pstmt = con.prepareStatement(pesquisa);
-				pstmt.setString(1, titulo);
+				pstmt.setString(1, codigo);
 				ResultSet rs = pstmt.executeQuery();
 
 				if (rs.next()) {
 					pstmt.close();
 					rs.close();
 
-					String sql = "DELETE FROM livro WHERE titulo=?";
+					String sql = "DELETE FROM livro WHERE codigo=?";
 					PreparedStatement stmt = con.prepareStatement(sql);
-					stmt.setString(1, titulo);
+					stmt.setString(1, codigo);
 					stmt.executeUpdate();
 					stmt.close();
 
@@ -89,10 +89,10 @@ public class LivroDAO {
 
 				} else {
 					Toolkit.getDefaultToolkit().beep();
-					JOptionPane.showMessageDialog(null, "Titulo não existe na tabela livro!");
+					JOptionPane.showMessageDialog(null, "Código de livro não existe na tabela livro!");
 					deletaLivro();
 				}
-			} else if (titulo.length() == 0 && titulo != null) {
+			} else if (codigo.length() == 0 && codigo != null) {
 				throw new DigitouNadaException();
 			}
 		} catch (SQLException e) {
@@ -181,8 +181,8 @@ public class LivroDAO {
 			int i = 0;
 
 			while (rs.next()) {
-				Livro livro = new Livro(rs.getInt("isbn"), rs.getString("titulo"), rs.getString("editora"),
-						rs.getString("autor"), rs.getInt("ano"));
+				Livro livro = new Livro(rs.getInt("codigo"), rs.getString("titulo"), rs.getString("editora"),
+						rs.getString("autor"), rs.getString("ano"));
 				livros.add(livro);
 				i++;
 			}

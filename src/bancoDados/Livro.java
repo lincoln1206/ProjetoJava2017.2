@@ -2,31 +2,36 @@ package bancoDados;
 
 public class Livro {
 	
-	int isbn;
+	int codigo;
     String titulo;
 	String editora;
 	String autor;
-	int ano;
+	String ano;
 	
 	public Livro() {
 
 	}
 	
-	public Livro(int isbn, String titulo, String editora, String autor, int ano) {
+	public Livro(String ano) {
 		super();
-		this.isbn = isbn;
+		this.ano = ano;
+	}
+
+	public Livro(int codigo, String titulo, String editora, String autor, String ano) {
+		super();
+		this.codigo = codigo;
 		this.titulo = titulo;
 		this.editora = editora;
 		this.autor = autor;;
 		this.ano = ano;
 	}
 
-	public int getIsbn() {
-		return isbn;
+	public int getCodigo() {
+		return codigo;
 	}
 
-	public void setIsbn(int isbn) {
-		this.isbn = isbn;
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
 	}
 
 	public String getTitulo() {
@@ -53,12 +58,16 @@ public class Livro {
 		this.autor = autor;
 	}
 
-	public int getAno() {
+	public String getAno() {
 		return ano;
 	}
 
-	public void setAno(int ano) {
+	public void setAno(String ano) {
 		this.ano = ano;
+	}
+	
+	public String toString() {
+		return ano;
 	}
 	
 }
