@@ -24,8 +24,9 @@ public class LivroDAO {
 
 	public void criaTabelaLivro() {
 		try {
-			String sql = "CREATE TABLE livro( " + "codigo int IDENTITY(1,1) primary key," + "titulo varchar(30),"
-					+ "editora varchar(30)," + "autor varchar(30)," + "ano varchar(5));";
+			String sql = "CREATE TABLE livro( " + "codigo INT IDENTITY(1,1) PRIMARY KEY NOT NULL,"
+					+ "titulo VARCHAR(40) NOT NULL," + "editora VARCHAR(40) NOT NULL," + "autor VARCHAR(40) NOT NULL,"
+					+ "ano INT NOT NULL);";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.execute();
 			stmt.close();
@@ -35,7 +36,7 @@ public class LivroDAO {
 
 		} catch (SQLException e) {
 			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(null, "Falha ao criar tabela livro");
+			JOptionPane.showMessageDialog(null, "Falha ao criar tabela livro!");
 		}
 
 	}
@@ -50,16 +51,13 @@ public class LivroDAO {
 			stmt.setString(1, livros.getTitulo());
 			stmt.setString(2, livros.getEditora());
 			stmt.setString(3, livros.getAutor());
-			stmt.setString(4, livros.getAno());
+			stmt.setInt(4, Integer.parseInt(livros.getAno()));
 			stmt.execute();
 			stmt.close();
 
-			JOptionPane.showMessageDialog(null, "Livro inserido com sucesso!");
-
 		} catch (SQLException e) {
 			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(null,
-					"Falha ao inserir livro!\n\nCAUSA: Provavelmente outro livro já inserido com esse mesmo 'ISBN'");
+			JOptionPane.showMessageDialog(null, "Falha ao inserir livro!");
 		}
 	}
 
@@ -89,7 +87,7 @@ public class LivroDAO {
 
 				} else {
 					Toolkit.getDefaultToolkit().beep();
-					JOptionPane.showMessageDialog(null, "Código de livro não existe na tabela livro!");
+					JOptionPane.showMessageDialog(null, "ERRO: Código de livro não existe na tabela livro!");
 					deletaLivro();
 				}
 			} else if (codigo.length() == 0 && codigo != null) {
@@ -182,7 +180,7 @@ public class LivroDAO {
 
 			while (rs.next()) {
 				Livro livro = new Livro(rs.getInt("codigo"), rs.getString("titulo"), rs.getString("editora"),
-						rs.getString("autor"), rs.getString("ano"));
+						rs.getString("autor"), rs.getInt("ano"));
 				livros.add(livro);
 				i++;
 			}

@@ -7,7 +7,8 @@ public class Livro {
 	String editora;
 	String autor;
 	String ano;
-	
+	int ano_;
+
 	public Livro() {
 
 	}
@@ -17,13 +18,13 @@ public class Livro {
 		this.ano = ano;
 	}
 
-	public Livro(int codigo, String titulo, String editora, String autor, String ano) {
+	public Livro(int codigo, String titulo, String editora, String autor, int ano_) {
 		super();
 		this.codigo = codigo;
 		this.titulo = titulo;
 		this.editora = editora;
-		this.autor = autor;;
-		this.ano = ano;
+		this.autor = autor;
+		this.ano_ = ano_;
 	}
 
 	public int getCodigo() {
@@ -68,6 +69,14 @@ public class Livro {
 	
 	public String toString() {
 		return ano;
+	}
+	
+	public int getAno_() {
+		return ano_;
+	}
+
+	public void setAno_(int ano_) {
+		this.ano_ = ano_;
 	}
 	
 }

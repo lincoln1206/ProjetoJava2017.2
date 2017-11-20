@@ -16,10 +16,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
 import com.towel.swing.img.JImagePanel;
-
-import bancoDados.Livro;
 import bancoDados.LivroDAO;
 
 public class InterfaceGraficaMenu extends JFrame {
@@ -29,193 +26,77 @@ public class InterfaceGraficaMenu extends JFrame {
 	 */
 	private static final long serialVersionUID = -6120954101551585652L;
 	LivroDAO metodos = new LivroDAO();
-	Livro livro = new Livro();
+	GridBagConstraints c = new GridBagConstraints();
 
 	private InterfaceGraficaInserir igi = new InterfaceGraficaInserir();
 	private InterfaceGraficaMostar igm = new InterfaceGraficaMostar();
 
+	// CONSTRUTOR PADRÃO DO JFRAME 'InterfaceGraficaMenu'
 	public InterfaceGraficaMenu() throws IOException {
-		Image iconeTitulo = Toolkit.getDefaultToolkit().getImage("images/livro.png");
-		this.setIconImage(iconeTitulo);
-		this.setTitle("Biblioteca");
-		this.add(painel());
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setVisible(true);
-		this.setSize(480, 480);
-		this.setLocationRelativeTo(null);
-		this.setResizable(false);
+		Image iconeTitulo = Toolkit.getDefaultToolkit().getImage("images/livro.png");// CARREGA A IMAGEM DO ICONE DO
+																						// JFRAME
+		this.setIconImage(iconeTitulo);// DEFINE O ICONE DO JFRAME
+		this.setTitle("Biblioteca");// DEFINE O TÍTULO DO JFRAME
+		this.add(painel());// ADICIONA O PAINEL AO JFRAME
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// DEFINE A SAÍDA PADRÃO DO JFRAME
+		this.setVisible(true);// DEFINE A VISIBILIDADE DO JFRAME
+		this.setSize(480, 480);// DEFINE O TAMANHO DO JFRAME
+		this.setLocationRelativeTo(null);// DEIXA O JFRAME NO CENTRO DA TELA
+		this.setResizable(false);// BLOQUEIA O USUÁRIO DE AUMENTAR O JFRAME
 	}
 
-	public JButton botaoSair() {
-		JButton botaoSair = new JButton("Sair");
-		botaoSair.setToolTipText("Clique aqui para sair do programa.");
-
-		botaoSair.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (!igi.isVisible() && !igm.isVisible()) {
-					System.exit(0);
-				} else {
-					Toolkit.getDefaultToolkit().beep();
-					if (igi.isVisible()) {
-						shake(igi);
-					} else if (igm.isVisible()) {
-						shake(igm);
-					}
-				}
-			}
-		});
-
-		return botaoSair;
-	}
-
-	public JButton botaoCriar() {
-		JButton botaoCriar = new JButton("Criar Tabela Livro");
-		botaoCriar.setToolTipText("Clique aqui para criar uma tebela 'livros' na biblioteca.");
-
-		botaoCriar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (!igi.isVisible() && !igm.isVisible()) {
-					metodos.criaTabelaLivro();
-				} else {
-					Toolkit.getDefaultToolkit().beep();
-					if (igi.isVisible()) {
-						shake(igi);
-					} else if (igm.isVisible()) {
-						shake(igm);
-					}
-				}
-			}
-		});
-
-		return botaoCriar;
-	}
-
-	public JButton botaoInserir() {
-		JButton botaoInserir = new JButton("Inserir Livro");
-		botaoInserir.setToolTipText("Clique aqui para inserir um livro na biblioteca.");
-
-		botaoInserir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					new InterfaceGraficaInserir();
-					if (!igi.isVisible() && !igm.isVisible()) {
-						igi.setVisible(true);
-					} else {
-						Toolkit.getDefaultToolkit().beep();
-						shake(igi);
-					}
-
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
-
-		return botaoInserir;
-	}
-
-	public JButton botaoDeletar() {
-		JButton botaoDeletar = new JButton("Deletar Livro");
-		botaoDeletar.setToolTipText("Clique aqui para deletar um título existente na biblioteca.");
-
-		botaoDeletar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (!igi.isVisible() && !igm.isVisible()) {
-					metodos.deletaLivro();
-				} else {
-					Toolkit.getDefaultToolkit().beep();
-					if (igi.isVisible()) {
-						shake(igi);
-					} else if (igm.isVisible()) {
-						shake(igm);
-					}
-				}
-			}
-		});
-
-		return botaoDeletar;
-	}
-
-	public JButton botaoAtualizar() {
-		JButton botaoAtualizar = new JButton("Atualizar Título");
-		botaoAtualizar.setToolTipText("Clique aqui para atualizar um título de um livro existenete na biblioteca.");
-
-		botaoAtualizar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (!igi.isVisible() && !igm.isVisible()) {
-					metodos.atualizaTitulo();
-				} else {
-					Toolkit.getDefaultToolkit().beep();
-					if (igi.isVisible()) {
-						shake(igi);
-					} else if (igm.isVisible()) {
-						shake(igm);
-					}
-				}
-			}
-		});
-
-		return botaoAtualizar;
-	}
-
-	public JButton botaoDeletarTabela() {
-		JButton botaoDeletarTabela = new JButton("Deletar Tabela");
-		botaoDeletarTabela.setToolTipText("Clique aqui para deletar todos os livros da biblioteca.");
-
-		botaoDeletarTabela.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (!igi.isVisible() && !igm.isVisible()) {
-					metodos.deletarTabela();
-				} else {
-					Toolkit.getDefaultToolkit().beep();
-					if (igi.isVisible()) {
-						shake(igi);
-					} else if (igm.isVisible()) {
-						shake(igm);
-					}
-				}
-			}
-		});
-
-		return botaoDeletarTabela;
-	}
-
-	public JButton botaoMostrar() {
-		JButton botaoMostar = new JButton("Mostar Tabela");
-		botaoMostar.setToolTipText("Clique aqui para mostar todos os livros cadastrados na biblioteca.");
-
-		botaoMostar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new InterfaceGraficaMostar();
-				if (!igm.isVisible() && !igi.isVisible()) {
-					igm.setVisible(true);
-				} else {
-					Toolkit.getDefaultToolkit().beep();
-					shake(igm);
-				}
-
-			}
-		});
-
-		return botaoMostar;
-	}
-
+	// JIMAGEPENAL - JPANEL MODIFICADO PARA COLOCAR IMAGENS NO BACKGROUND
 	public JImagePanel painel() throws IOException {
-		JImagePanel painel = new JImagePanel(loadImage("images/biblioteca.jpg"));
-		painel.setLayout(new GridBagLayout());
+		JImagePanel painel = new JImagePanel(loadImage("images/biblioteca.jpg"));// CHAMA O PAINEL E CARREGA SUA IMAGEM
+																					// DE FUNDO
 
-		painel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		GridBagConstraints c = new GridBagConstraints();
+		painel.setLayout(new GridBagLayout());// DEFINE O LAYOUT DO PAINEL
+		painel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);// DEFINE A ORIENTAÇÃO DOS COMPONENTES DO
+																			// PAINEL
+		painel.add(lNome(), c);// ADICIONA O LABEL 'lNome' AO PAINEL
+		setPadrao();// DEFINE O PADRÃO DE TAMANHO/LOCALIZAÇÃO DOS ELEMENTOS DO PAINEL
 
-		JLabel lNome = new JLabel("BIBLIOTECA");
-		c.gridx = 2;
-		c.gridy = 0;
-		lNome.setForeground(Color.WHITE);
-		lNome.setBackground(Color.WHITE);
-		lNome.setFont(new Font("Arial", Font.BOLD, 20));
-		painel.add(lNome, c);
+		// DEFINE A POSIÇÃO DO BOTÃO NO PAINEL
+		c.gridx = 0;
+		c.gridy = 1;
+		painel.add(botaoCriar(), c);// ADICIONA O BOTÃO 'Criar Tabela'
 
-		// DEFINE OS PADRÕES DE TODOS OS BOTÕES
+		// DEFINE A POSIÇÃO DO BOTÃO NO PAINEL
+		c.gridx = 0;
+		c.gridy = 2;
+		painel.add(botaoInserir(), c);// ADICIONA O BOTÃO 'Inserir Livro'
+
+		// DEFINE A POSIÇÃO DO BOTÃO NO PAINEL
+		c.gridx = 0;
+		c.gridy = 3;
+		painel.add(botaoDeletar(), c);// ADICIONA O BOTÃO 'Deletar Livro'
+
+		// DEFINE A POSIÇÃO DO BOTÃO NO PAINEL
+		c.gridx = 0;
+		c.gridy = 4;
+		painel.add(botaoAtualizar(), c);// ADICIONA O BOTÃO 'Atualizar Título'
+
+		// DEFINE A POSIÇÃO DO BOTÃO NO PAINEL
+		c.gridx = 0;
+		c.gridy = 5;
+		painel.add(botaoDeletarTabela(), c);// ADICIONA O BOTÃO 'Deletar Tabela'
+
+		// DEFINE A POSIÇÃO DO BOTÃO NO PAINEL
+		c.gridx = 0;
+		c.gridy = 6;
+		painel.add(botaoMostrar(), c);// ADICIONA O BOTÃO 'Mostar Tabela'
+
+		// DEFINE A POSIÇÃO DO BOTÃO NO PAINEL
+		c.gridx = 0;
+		c.gridy = 7;
+		painel.add(botaoSair(), c);// ADICIONA O BOTÃO 'Sair'
+
+		return painel;
+	}
+
+	// FUNÇÃO PARA DEFINIR UM PADRÃO DE TAMANHO/LOCALIZAÇÃO NOS ELEMENTOS DO LAYOUT
+	// DO PAINEL
+	public void setPadrao() {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 0.0;
 		c.weighty = 0.5;
@@ -223,43 +104,28 @@ public class InterfaceGraficaMenu extends JFrame {
 		c.weightx = 0.0;
 		c.gridwidth = 0;
 		c.gridx = 0;
-		//
-
-		c.gridx = 0;
-		c.gridy = 1;
-		painel.add(botaoCriar(), c);
-
-		c.gridx = 0;
-		c.gridy = 2;
-		painel.add(botaoInserir(), c);
-
-		c.gridx = 0;
-		c.gridy = 3;
-		painel.add(botaoDeletar(), c);
-
-		c.gridx = 0;
-		c.gridy = 4;
-		painel.add(botaoAtualizar(), c);
-
-		c.gridx = 0;
-		c.gridy = 5;
-		painel.add(botaoDeletarTabela(), c);
-
-		c.gridx = 0;
-		c.gridy = 6;
-		painel.add(botaoMostrar(), c);
-
-		c.gridx = 0;
-		c.gridy = 7;
-		painel.add(botaoSair(), c);
-
-		return painel;
 	}
 
+	// LABEL 'lNome'
+	public JLabel lNome() {
+		JLabel lNome = new JLabel("BIBLIOTECA");
+		// DEFINE A POSIÇÃO DO LABEL NO PAINEL
+		c.gridx = 2;
+		c.gridy = 0;
+		// DEFINE A COR DO LABEL
+		lNome.setForeground(Color.WHITE);
+		lNome.setBackground(Color.WHITE);
+		// DEFINE A FONTE E TAMANHO DO LABEL
+		lNome.setFont(new Font("Arial", Font.BOLD, 20));
+		return lNome;
+	}
+
+	// FUNÇÃO PARA CARREGAR AS IMAGENS NO PAINEL
 	private static BufferedImage loadImage(String file) throws IOException {
 		return ImageIO.read(new File(file));
 	}
 
+	// FUNÇÃO PARA TREMER O JFRAME
 	public void shake(javax.swing.JFrame jframe) {
 		try {
 			int originalX = jframe.getLocation().x;
@@ -288,6 +154,179 @@ public class InterfaceGraficaMenu extends JFrame {
 		} catch (Exception ex) {
 			System.out.println(ex.toString());
 		}
+	}
+
+	/*
+	 * BOTÕES PERCEBA QUE A FUNÇÃO NOS BOTÕES SEGUINTES IMPEDE QUE VÁRIAS JANELAS
+	 * SEJAM CRIADAS:
+	 * 
+	 * if (!igi.isVisible() && !igm.isVisible()) { metodos... ->Dependendo do if o
+	 * metodo solicitado aparece ou não } else { Toolkit.getDefaultToolkit().beep();
+	 * if (igi.isVisible()) { shake(igi); -> treme o JFrame InterfaceGraficaInserir
+	 * } else if (igm.isVisible()) { shake(igm); -> treme o JFrame
+	 * InterfaceGraficaMostrar } }
+	 */
+
+	// BOTÃO 'Criar'
+	public JButton botaoCriar() {
+		JButton botaoCriar = new JButton("Criar Tabela Livro");
+		botaoCriar.setToolTipText("Clique aqui para criar uma tebela 'livros' na biblioteca.");
+
+		botaoCriar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!igi.isVisible() && !igm.isVisible()) {
+					metodos.criaTabelaLivro();
+				} else {
+					Toolkit.getDefaultToolkit().beep();
+					if (igi.isVisible()) {
+						shake(igi);
+					} else if (igm.isVisible()) {
+						shake(igm);
+					}
+				}
+			}
+		});
+
+		return botaoCriar;
+	}
+
+	// BOTÃO 'Inserir Livro'
+	public JButton botaoInserir() {
+		JButton botaoInserir = new JButton("Inserir Livro");
+		botaoInserir.setToolTipText("Clique aqui para inserir um livro na biblioteca.");
+
+		botaoInserir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!igi.isVisible() && !igm.isVisible()) {
+					igi.setVisible(true);
+				} else {
+					Toolkit.getDefaultToolkit().beep();
+					if (igi.isVisible()) {
+						shake(igi);
+					} else if (igm.isVisible()) {
+						shake(igm);
+					}
+				}
+			}
+		});
+
+		return botaoInserir;
+	}
+
+	// BOTÃO 'Deletar Livro'
+	public JButton botaoDeletar() {
+		JButton botaoDeletar = new JButton("Deletar Livro");
+		botaoDeletar.setToolTipText("Clique aqui para deletar um título existente na biblioteca.");
+
+		botaoDeletar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!igi.isVisible() && !igm.isVisible()) {
+					metodos.deletaLivro();
+				} else {
+					Toolkit.getDefaultToolkit().beep();
+					if (igi.isVisible()) {
+						shake(igi);
+					} else if (igm.isVisible()) {
+						shake(igm);
+					}
+				}
+			}
+		});
+
+		return botaoDeletar;
+	}
+
+	// BOTÃO 'Atualizar Título'
+	public JButton botaoAtualizar() {
+		JButton botaoAtualizar = new JButton("Atualizar Título");
+		botaoAtualizar.setToolTipText("Clique aqui para atualizar um título de um livro existenete na biblioteca.");
+
+		botaoAtualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!igi.isVisible() && !igm.isVisible()) {
+					metodos.atualizaTitulo();
+				} else {
+					Toolkit.getDefaultToolkit().beep();
+					if (igi.isVisible()) {
+						shake(igi);
+					} else if (igm.isVisible()) {
+						shake(igm);
+					}
+				}
+			}
+		});
+
+		return botaoAtualizar;
+	}
+
+	// BOTÃO 'Deletar Tabela'
+	public JButton botaoDeletarTabela() {
+		JButton botaoDeletarTabela = new JButton("Deletar Tabela");
+		botaoDeletarTabela.setToolTipText("Clique aqui para deletar todos os livros da biblioteca.");
+
+		botaoDeletarTabela.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!igi.isVisible() && !igm.isVisible()) {
+					metodos.deletarTabela();
+				} else {
+					Toolkit.getDefaultToolkit().beep();
+					if (igi.isVisible()) {
+						shake(igi);
+					} else if (igm.isVisible()) {
+						shake(igm);
+					}
+				}
+			}
+		});
+
+		return botaoDeletarTabela;
+	}
+
+	// BOTÃO 'Mostar Tabela'
+	public JButton botaoMostrar() {
+		JButton botaoMostar = new JButton("Mostar Tabela");
+		botaoMostar.setToolTipText("Clique aqui para mostar todos os livros cadastrados na biblioteca.");
+
+		botaoMostar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!igi.isVisible() && !igm.isVisible()) {
+						igm = new InterfaceGraficaMostar();
+						igm.setVisible(true);
+				} else {
+					Toolkit.getDefaultToolkit().beep();
+					if (igi.isVisible()) {
+						shake(igi);
+					} else if (igm.isVisible()) {
+						shake(igm);
+					}
+				}
+			}
+		});
+
+		return botaoMostar;
+	}
+
+	// BOTÃO 'Sair'
+	public JButton botaoSair() {
+		JButton botaoSair = new JButton("Sair");
+		botaoSair.setToolTipText("Clique aqui para sair do programa.");
+
+		botaoSair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!igi.isVisible() && !igm.isVisible()) {
+					System.exit(0);
+				} else {
+					Toolkit.getDefaultToolkit().beep();
+					if (igi.isVisible()) {
+						shake(igi);
+					} else if (igm.isVisible()) {
+						shake(igm);
+					}
+				}
+			}
+		});
+
+		return botaoSair;
 	}
 
 }

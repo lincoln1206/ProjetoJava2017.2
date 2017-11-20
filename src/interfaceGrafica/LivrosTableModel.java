@@ -39,7 +39,7 @@ public class LivrosTableModel extends AbstractTableModel {
 		case 3:
 			return l.getAutor();
 		case 4:
-			return l.getAno();
+			return l.getAno_();
 		}
 		return null;
 	}
