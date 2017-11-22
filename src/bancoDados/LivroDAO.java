@@ -2,21 +2,31 @@ package bancoDados;
 
 import java.awt.Toolkit;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.JOptionPane;
-
 import exceptions.DigitouNadaException;
 import exceptions.SemDadosException;
+import exceptions.TabelaInexistenteException;
 
 public class LivroDAO {
 
 	Connection con = new ConexaoBD().getConnection();
+	
+	List<Livro> livros = new ArrayList<Livro>();
+
+	public List<Livro> getLivros() {
+		return livros;
+	}
+
+	public void setLivros(List<Livro> livros) {
+		this.livros = livros;
+	}
 
 	public LivroDAO() {
 
@@ -24,7 +34,7 @@ public class LivroDAO {
 
 	public void criaTabelaLivro() {
 		try {
-			String sql = "CREATE TABLE livro( " + "codigo INT IDENTITY(1,1) PRIMARY KEY NOT NULL,"
+			String sql = "CREATE TABLE livros( " + "codigo INT PRIMARY KEY NOT NULL AUTO_INCREMENT,"
 					+ "titulo VARCHAR(40) NOT NULL," + "editora VARCHAR(40) NOT NULL," + "autor VARCHAR(40) NOT NULL,"
 					+ "ano INT NOT NULL);";
 			PreparedStatement stmt = con.prepareStatement(sql);
@@ -36,7 +46,7 @@ public class LivroDAO {
 
 		} catch (SQLException e) {
 			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(null, "Falha ao criar tabela livro!");
+			JOptionPane.showMessageDialog(null, "ERRO: Tabela já foi criada!");
 		}
 
 	}
@@ -45,7 +55,7 @@ public class LivroDAO {
 
 		try {
 
-			String sql = "INSERT INTO livro (titulo, editora,autor, ano) VALUES(?,?,?,?)";
+			String sql = "INSERT INTO livros (titulo, editora,autor, ano) VALUES(?,?,?,?)";
 			PreparedStatement stmt = con.prepareStatement(sql);
 
 			stmt.setString(1, livros.getTitulo());
@@ -67,7 +77,7 @@ public class LivroDAO {
 			String codigo = JOptionPane.showInputDialog("Digite o código do livro que deseja excluir");
 
 			if (codigo.length() > 0 && codigo != null) {
-				String pesquisa = "SELECT titulo FROM livro WHERE codigo=?";
+				String pesquisa = "SELECT titulo FROM livros WHERE codigo=?";
 				PreparedStatement pstmt = con.prepareStatement(pesquisa);
 				pstmt.setString(1, codigo);
 				ResultSet rs = pstmt.executeQuery();
@@ -76,7 +86,7 @@ public class LivroDAO {
 					pstmt.close();
 					rs.close();
 
-					String sql = "DELETE FROM livro WHERE codigo=?";
+					String sql = "DELETE FROM livros WHERE codigo=?";
 					PreparedStatement stmt = con.prepareStatement(sql);
 					stmt.setString(1, codigo);
 					stmt.executeUpdate();
@@ -87,7 +97,7 @@ public class LivroDAO {
 
 				} else {
 					Toolkit.getDefaultToolkit().beep();
-					JOptionPane.showMessageDialog(null, "ERRO: Código de livro não existe na tabela livro!");
+					JOptionPane.showMessageDialog(null, "ERRO: Código de livro não existe na tabela livros!");
 					deletaLivro();
 				}
 			} else if (codigo.length() == 0 && codigo != null) {
@@ -110,7 +120,7 @@ public class LivroDAO {
 		try {
 			String tituloAntigo = JOptionPane.showInputDialog("Digite o titulo do livro que deseja atualizar o titulo");
 			if (tituloAntigo.length() > 0 && tituloAntigo != null) {
-				String pesquisa = "SELECT titulo FROM livro WHERE titulo=?";
+				String pesquisa = "SELECT titulo FROM livros WHERE titulo=?";
 				PreparedStatement pstmt = con.prepareStatement(pesquisa);
 				pstmt.setString(1, tituloAntigo);
 				ResultSet rs = pstmt.executeQuery();
@@ -121,7 +131,7 @@ public class LivroDAO {
 
 					String novoTitulo = JOptionPane.showInputDialog("Digite o novo titulo");
 					if (novoTitulo.length() > 0 && novoTitulo != null) {
-						String sql = "UPDATE livro SET titulo=? WHERE titulo=?";
+						String sql = "UPDATE livros SET titulo=? WHERE titulo=?";
 						PreparedStatement stmt = con.prepareStatement(sql);
 						stmt.setString(1, novoTitulo);
 						stmt.setString(2, tituloAntigo);
@@ -135,7 +145,7 @@ public class LivroDAO {
 					}
 				} else {
 					Toolkit.getDefaultToolkit().beep();
-					JOptionPane.showMessageDialog(null, "ERRO: Titulo não existe na tabela livro!");
+					JOptionPane.showMessageDialog(null, "ERRO: Titulo não existe na tabela livros!");
 					atualizaTitulo();
 
 				}
@@ -156,54 +166,63 @@ public class LivroDAO {
 
 	public void deletarTabela() {
 		try {
-			String sql = "DROP TABLE livro";
+			String sql = "DROP TABLE livros";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.execute();
 			stmt.close();
 
 			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(null, "Tabela 'livro' deletada com sucesso!");
+			JOptionPane.showMessageDialog(null, "Tabela 'livros' deletada com sucesso!");
 		} catch (SQLException e) {
 			Toolkit.getDefaultToolkit().beep();
 			JOptionPane.showMessageDialog(null, "Erro ao deletar tabela!");
 		}
 	}
 
-	List<Livro> livros = new ArrayList<Livro>();
-
-	public void obterTabela() {
+	public void obterTabela(){
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT *FROM livro");
-
-			int i = 0;
+			ResultSet rs = stmt.executeQuery("SELECT *FROM livros");
+			int qtd = 0;
 
 			while (rs.next()) {
 				Livro livro = new Livro(rs.getInt("codigo"), rs.getString("titulo"), rs.getString("editora"),
 						rs.getString("autor"), rs.getInt("ano"));
 				livros.add(livro);
-				i++;
+				qtd++;
 			}
-			if (i == 0) {
+			if(qtd == 0) {
 				throw new SemDadosException();
 			}
 			stmt.close();
 			rs.close();
 		} catch (SQLException e) {
 			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(null, "Erro ao obter tabela!");
+			JOptionPane.showMessageDialog(null,
+					"Tabela de livros não existe...\nClique no botão 'Criar Tabela Livros' !");
 		} catch (SemDadosException e) {
 			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(null, "Tabela vazia!");
+			JOptionPane.showMessageDialog(null, "A tabela de livros está vazia...\nAdicione Algo!");
 		}
 	}
 
-	public List<Livro> getLivros() {
-		return livros;
+	public boolean existeTabela() {
+		try {
+			DatabaseMetaData dbm;
+			dbm = con.getMetaData();
+			ResultSet tables = dbm.getTables(null, null, "livros", null);
+			if (tables.next()) {
+				return true;
+			}else {
+				throw new TabelaInexistenteException();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (TabelaInexistenteException e) {
+			Toolkit.getDefaultToolkit().beep();
+			JOptionPane.showMessageDialog(null,
+					"ERRO: Tabela de livros não existe\nClique no botão 'Criar Tabela Livros' !");
+		}
+		return false;
 	}
-
-	public void setLivros(List<Livro> livros) {
-		this.livros = livros;
-	}
-
 }

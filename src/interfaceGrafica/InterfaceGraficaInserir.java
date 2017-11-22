@@ -40,6 +40,8 @@ public class InterfaceGraficaInserir extends JFrame {
 	LivroDAO banco = new LivroDAO();
 	GridBagConstraints c = new GridBagConstraints();
 	JComboBox<String> cbAnos = new JComboBox<String>();
+	Calendar cal = GregorianCalendar.getInstance();
+	int anoAtual = cal.get(Calendar.YEAR);
 
 	JTextField titulo = new JTextField(8);
 	JTextField editora = new JTextField(8);
@@ -168,6 +170,7 @@ public class InterfaceGraficaInserir extends JFrame {
 		autor.setText("");
 		livro.setAutor(null);
 		livro.setAno(null);
+		cbAnos.setSelectedIndex(anoAtual+3000);
 
 	}
 
@@ -188,9 +191,6 @@ public class InterfaceGraficaInserir extends JFrame {
 
 	public void preparaComboBox() {
 		List<Livro> anos = new ArrayList<Livro>();
-
-		Calendar cal = GregorianCalendar.getInstance();
-		int anoAtual = cal.get(Calendar.YEAR);
 
 		for (int i = -3000; i <= anoAtual; i++) {
 			String anoTemp = String.valueOf(i);

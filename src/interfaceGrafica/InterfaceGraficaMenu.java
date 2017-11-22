@@ -156,20 +156,9 @@ public class InterfaceGraficaMenu extends JFrame {
 		}
 	}
 
-	/*
-	 * BOTÕES PERCEBA QUE A FUNÇÃO NOS BOTÕES SEGUINTES IMPEDE QUE VÁRIAS JANELAS
-	 * SEJAM CRIADAS:
-	 * 
-	 * if (!igi.isVisible() && !igm.isVisible()) { metodos... ->Dependendo do if o
-	 * metodo solicitado aparece ou não } else { Toolkit.getDefaultToolkit().beep();
-	 * if (igi.isVisible()) { shake(igi); -> treme o JFrame InterfaceGraficaInserir
-	 * } else if (igm.isVisible()) { shake(igm); -> treme o JFrame
-	 * InterfaceGraficaMostrar } }
-	 */
-
 	// BOTÃO 'Criar'
 	public JButton botaoCriar() {
-		JButton botaoCriar = new JButton("Criar Tabela Livro");
+		JButton botaoCriar = new JButton("Criar Tabela Livros");
 		botaoCriar.setToolTipText("Clique aqui para criar uma tebela 'livros' na biblioteca.");
 
 		botaoCriar.addActionListener(new ActionListener() {
@@ -197,13 +186,14 @@ public class InterfaceGraficaMenu extends JFrame {
 
 		botaoInserir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (!igi.isVisible() && !igm.isVisible()) {
+				if (!igi.isVisible() && !igm.isVisible() && metodos.existeTabela()) {
 					igi.setVisible(true);
-				} else {
-					Toolkit.getDefaultToolkit().beep();
+				} else {                            
 					if (igi.isVisible()) {
+						Toolkit.getDefaultToolkit().beep();
 						shake(igi);
 					} else if (igm.isVisible()) {
+						Toolkit.getDefaultToolkit().beep();
 						shake(igm);
 					}
 				}
@@ -220,13 +210,14 @@ public class InterfaceGraficaMenu extends JFrame {
 
 		botaoDeletar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (!igi.isVisible() && !igm.isVisible()) {
+				if (!igi.isVisible() && !igm.isVisible() && metodos.existeTabela()) {
 					metodos.deletaLivro();
 				} else {
-					Toolkit.getDefaultToolkit().beep();
 					if (igi.isVisible()) {
+						Toolkit.getDefaultToolkit().beep();
 						shake(igi);
 					} else if (igm.isVisible()) {
+						Toolkit.getDefaultToolkit().beep();
 						shake(igm);
 					}
 				}
@@ -243,13 +234,14 @@ public class InterfaceGraficaMenu extends JFrame {
 
 		botaoAtualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (!igi.isVisible() && !igm.isVisible()) {
+				if (!igi.isVisible() && !igm.isVisible() && metodos.existeTabela()) {
 					metodos.atualizaTitulo();
 				} else {
-					Toolkit.getDefaultToolkit().beep();
 					if (igi.isVisible()) {
+						Toolkit.getDefaultToolkit().beep();
 						shake(igi);
 					} else if (igm.isVisible()) {
+						Toolkit.getDefaultToolkit().beep();
 						shake(igm);
 					}
 				}
@@ -266,13 +258,14 @@ public class InterfaceGraficaMenu extends JFrame {
 
 		botaoDeletarTabela.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (!igi.isVisible() && !igm.isVisible()) {
+				if (!igi.isVisible() && !igm.isVisible() && metodos.existeTabela()) {
 					metodos.deletarTabela();
 				} else {
-					Toolkit.getDefaultToolkit().beep();
 					if (igi.isVisible()) {
+						Toolkit.getDefaultToolkit().beep();
 						shake(igi);
 					} else if (igm.isVisible()) {
+						Toolkit.getDefaultToolkit().beep();
 						shake(igm);
 					}
 				}
@@ -289,14 +282,15 @@ public class InterfaceGraficaMenu extends JFrame {
 
 		botaoMostar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (!igi.isVisible() && !igm.isVisible()) {
-						igm = new InterfaceGraficaMostar();
-						igm.setVisible(true);
+				if (!igi.isVisible() && !igm.isVisible() && metodos.existeTabela()) {
+					igm = new InterfaceGraficaMostar();
+					igm.setVisible(true);
 				} else {
-					Toolkit.getDefaultToolkit().beep();
 					if (igi.isVisible()) {
+						Toolkit.getDefaultToolkit().beep();
 						shake(igi);
 					} else if (igm.isVisible()) {
+						Toolkit.getDefaultToolkit().beep();
 						shake(igm);
 					}
 				}
