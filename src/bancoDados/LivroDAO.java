@@ -14,6 +14,8 @@ import exceptions.DigitouNadaException;
 import exceptions.SemDadosException;
 import exceptions.TabelaInexistenteException;
 
+/*Classe com os metodos para manipular o banco de dados */
+
 public class LivroDAO {
 
 	Connection con = new ConexaoBD().getConnection();

@@ -31,18 +31,18 @@ public class InterfaceGraficaMenu extends JFrame {
 	private InterfaceGraficaInserir igi = new InterfaceGraficaInserir();
 	private InterfaceGraficaMostar igm = new InterfaceGraficaMostar();
 
-	// CONSTRUTOR PADRÃO DO JFRAME 'InterfaceGraficaMenu'
+	/* CONSTRUTOR PADRÃO DO JFRAME 'InterfaceGraficaMenu' */
 	public InterfaceGraficaMenu() throws IOException {
-		Image iconeTitulo = Toolkit.getDefaultToolkit().getImage("images/livro.png");// CARREGA A IMAGEM DO ICONE DO
-																						// JFRAME
-		this.setIconImage(iconeTitulo);// DEFINE O ICONE DO JFRAME
-		this.setTitle("Biblioteca");// DEFINE O TÍTULO DO JFRAME
-		this.add(painel());// ADICIONA O PAINEL AO JFRAME
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// DEFINE A SAÍDA PADRÃO DO JFRAME
-		this.setVisible(true);// DEFINE A VISIBILIDADE DO JFRAME
-		this.setSize(480, 480);// DEFINE O TAMANHO DO JFRAME
-		this.setLocationRelativeTo(null);// DEIXA O JFRAME NO CENTRO DA TELA
-		this.setResizable(false);// BLOQUEIA O USUÁRIO DE AUMENTAR O JFRAME
+		Image iconeTitulo = Toolkit.getDefaultToolkit()
+				.getImage("images/livro.png");/* CARREGA A IMAGEM DO ICONE DO JFRAME */
+		this.setIconImage(iconeTitulo);/* DEFINE O ICONE DO JFRAME */
+		this.setTitle("Biblioteca");/* DEFINE O TÍTULO DO JFRAME */
+		this.add(painel());/* ADICIONA O PAINEL AO JFRAME */
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);/* DEFINE A SAÍDA PADRÃO DO JFRAME */
+		this.setVisible(true);/* DEFINE A VISIBILIDADE DO JFRAME */
+		this.setSize(480, 480);/* DEFINE O TAMANHO DO JFRAME */
+		this.setLocationRelativeTo(null);/* DEIXA O JFRAME NO CENTRO DA TELA */
+		this.setResizable(false);/* BLOQUEIA O USUÁRIO DE AUMENTAR O JFRAME */
 	}
 
 	// JIMAGEPENAL - JPANEL MODIFICADO PARA COLOCAR IMAGENS NO BACKGROUND
@@ -91,7 +91,7 @@ public class InterfaceGraficaMenu extends JFrame {
 		c.gridy = 7;
 		painel.add(botaoSair(), c);// ADICIONA O BOTÃO 'Sair'
 
-		return painel;
+		return painel;//RETORNA O PAINEL
 	}
 
 	// FUNÇÃO PARA DEFINIR UM PADRÃO DE TAMANHO/LOCALIZAÇÃO NOS ELEMENTOS DO LAYOUT
@@ -188,7 +188,7 @@ public class InterfaceGraficaMenu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (!igi.isVisible() && !igm.isVisible() && metodos.existeTabela()) {
 					igi.setVisible(true);
-				} else {                            
+				} else {
 					if (igi.isVisible()) {
 						Toolkit.getDefaultToolkit().beep();
 						shake(igi);
@@ -283,7 +283,12 @@ public class InterfaceGraficaMenu extends JFrame {
 		botaoMostar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!igi.isVisible() && !igm.isVisible() && metodos.existeTabela()) {
-					igm = new InterfaceGraficaMostar();
+					try {
+						igm = new InterfaceGraficaMostar();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					igm.setVisible(true);
 				} else {
 					if (igi.isVisible()) {

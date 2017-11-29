@@ -47,53 +47,70 @@ public class InterfaceGraficaInserir extends JFrame {
 	JTextField editora = new JTextField(8);
 	JTextField autor = new JTextField(8);
 
+	/* CONSTRUTOR PADRÃO DO JFRAME 'InterfaceGraficaInserir' */
 	public InterfaceGraficaInserir() throws IOException {
-		Image iconeTitulo = Toolkit.getDefaultToolkit().getImage("images/livro.png");// CARREGA A IMAGEM DO ICONE DO
-																						// JFRAME
-		this.setIconImage(iconeTitulo);// DEFINE O ICONE DO JFRAME
-		this.setTitle("Biblioteca");// DEFINE O TÍTULO DO JFRAME
-		this.add(painel());// ADICIONA O PAINEL AO JFRAME
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);// DEFINE A SAÍDA PADRÃO DO JFRAME
-		this.setSize(480, 480);// DEFINE O TAMANHO DO JFRAME
-		this.setLocationRelativeTo(null);// DEIXA O JFRAME NO CENTRO DA TELA
-		this.setResizable(false);// BLOQUEIA O USUÁRIO DE AUMENTAR O JFRAME
+		Image iconeTitulo = Toolkit.getDefaultToolkit()
+				.getImage("images/livro.png");/* CARREGA A IMAGEM DO ICONE DO JFRAME */
+		this.setIconImage(iconeTitulo);/* DEFINE O ICONE DO JFRAME */
+		this.setTitle("Biblioteca");/* DEFINE O TÍTULO DO JFRAME */
+		this.add(painel());/* ADICIONA O PAINEL AO JFRAME */
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);/* DEFINE A SAÍDA PADRÃO DO JFRAME */
+		this.setSize(480, 480);/* DEFINE O TAMANHO DO JFRAME */
+		this.setLocationRelativeTo(null);/* DEIXA O JFRAME NO CENTRO DA TELA */
+		this.setResizable(false);/* BLOQUEIA O USUÁRIO DE AUMENTAR O JFRAME */
 	}
 
 	public JImagePanel painel() throws IOException {
-		JImagePanel painel = new JImagePanel(loadImage("images/biblioteca.jpg"));
-
-		painel.setLayout(new GridBagLayout());
-		painel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		painel.add(lNome(), c);
-		setPadrao(1);
+		JImagePanel painel = new JImagePanel(loadImage("images/biblioteca.jpg"));// CHAMA O PAINEL E CARREGA SUA IMAGEM
+		// DE FUNDO
+		painel.setLayout(new GridBagLayout());// DEFINE O LAYOUT DO PAINEL
+		painel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);// DEFINE A ORIENTAÇÃO DOS COMPONENTES DO
+		// PAINEL
+		painel.add(lNome(), c);// ADICIONA O LABEL 'lNome' AO PAINEL
+		setPadrao(1);// DEFINE O PADRÃO DE TAMANHO/LOCALIZAÇÃO DOS ELEMENTOS DO PAINEL
+		
+		// ADICIONA O LABEL 'lTitulo' E O JTextField 'titulo' AO PAINEL
 		painel.add(lTitulo(), c);
 		c.gridx = 4;
 		c.gridy = 1;
 		painel.add(titulo, c);
+		
+		// ADICIONA O LABEL 'lAutor' E O JTextField 'autor' AO PAINEL
 		painel.add(lAutor(), c);
 		c.gridx = 4;
 		c.gridy = 2;
 		painel.add(autor, c);
+		
+		// ADICIONA O LABEL 'lEditora' E O JTextField 'editora' AO PAINEL
 		painel.add(lEditora(), c);
 		c.gridx = 4;
 		c.gridy = 3;
 		painel.add(editora, c);
+		
+		// ADICIONA O LABEL 'lAno' E A  JComboBox AO PAINEL
 		painel.add(lAno(), c);
 		c.gridx = 4;
 		c.gridy = 4;
 		preparaComboBox();
 		painel.add(cbAnos, c);
-		setPadrao(2);
+		
+		setPadrao(2);// DEFINE O PADRÃO DE TAMANHO/LOCALIZAÇÃO DOS ELEMENTOS DO PAINEL
+		
+		// ADICIONA O BOTÃO INSERIR AO PAINEL
 		c.gridx = 0;
 		c.gridy = 5;
 		painel.add(botaoInserir(), c);
+		
+		// ADICIONA O BOTÃO CANCELAR AO PAINEL
 		c.gridx = 0;
 		c.gridy = 6;
 		painel.add(botaoCancelar(), c);
 
-		return painel;
+		return painel;//RETORNA O PAINEL
 	}
 
+	// FUNÇÃO PARA DEFINIR UM PADRÃO DE TAMANHO/LOCALIZAÇÃO NOS ELEMENTOS DO LAYOUT
+	// DO PAINEL
 	public void setPadrao(int padrao) {
 		if (padrao == 1) {
 			c.fill = GridBagConstraints.HORIZONTAL;
@@ -111,6 +128,7 @@ public class InterfaceGraficaInserir extends JFrame {
 		}
 	}
 
+	// LABELS
 	public JLabel lNome() {
 		JLabel lNome = new JLabel("INSERIR LIVRO");
 		c.gridx = 2;
@@ -161,6 +179,7 @@ public class InterfaceGraficaInserir extends JFrame {
 		return lAno;
 	}
 
+	// LIMPA OS CAMPOS
 	public void limparCampos() {
 
 		titulo.setText("");
@@ -170,10 +189,11 @@ public class InterfaceGraficaInserir extends JFrame {
 		autor.setText("");
 		livro.setAutor(null);
 		livro.setAno(null);
-		cbAnos.setSelectedIndex(anoAtual+3000);
+		cbAnos.setSelectedIndex(anoAtual + 3000);
 
 	}
 
+	// DEFINE OS VALORES DAS VARIÁVEIS
 	public void setValores() {
 		try {
 			if (titulo.getText().length() < 40 && autor.getText().length() < 40 && editora.getText().length() < 40) {
@@ -185,10 +205,12 @@ public class InterfaceGraficaInserir extends JFrame {
 			}
 		} catch (StringIndexOutOfBoundsException e) {
 			Toolkit.getDefaultToolkit().beep();
-			JOptionPane.showMessageDialog(null, "ERRO: Os campos 'Título' , 'Autor' e 'Editora' só podem ter no máximo 40 caracteres!");
+			JOptionPane.showMessageDialog(null,
+					"ERRO: Os campos 'Título' , 'Autor' e 'Editora' só podem ter no máximo 40 caracteres!");
 		}
 	}
 
+	// PREPARA O JComboBox DOS ANOS
 	public void preparaComboBox() {
 		List<Livro> anos = new ArrayList<Livro>();
 
@@ -213,10 +235,12 @@ public class InterfaceGraficaInserir extends JFrame {
 		});
 	}
 
+	// CARREGA A IMAGEM DO BACKGROUND
 	private static BufferedImage loadImage(String file) throws IOException {
 		return ImageIO.read(new File(file));
 	}
 
+	// BOTÃO INSERIR
 	public JButton botaoInserir() {
 
 		JButton botaoInserir = new JButton("Inserir");
@@ -227,13 +251,14 @@ public class InterfaceGraficaInserir extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				setValores();
-
+				
+				/*if que checa se os valores podem ser adicionados ao banco */
 				if (livro.getTitulo() != null && !livro.getTitulo().isEmpty() && livro.getEditora() != null
 						&& !livro.getEditora().isEmpty() && livro.getAno() != null && livro.getAutor() != null
 						&& !livro.getAutor().isEmpty()) {
 
 					banco.insereLivro(livro);
-					
+
 					Toolkit.getDefaultToolkit().beep();
 					JOptionPane.showMessageDialog(null, "Livro inserido com sucesso!");
 
@@ -256,6 +281,7 @@ public class InterfaceGraficaInserir extends JFrame {
 
 	}
 
+	// BOTÃO CANCELAR
 	public JButton botaoCancelar() {
 
 		JButton botaoCancelar = new JButton("Cancelar");

@@ -1,5 +1,7 @@
 package bancoDados;
 
+/*Classe com as variáveis do banco de dados */
+
 public class Livro {
 	
 	int codigo;
